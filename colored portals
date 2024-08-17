@@ -1,0 +1,141 @@
+/*
+submission by: advaita soni
+*/
+#include <iomanip>
+#include <ios>
+#include<bits/stdc++.h>
+#define ll long long
+#define pb push_back
+#define fr(a,b) for(int i = a; i < b; i++)
+#define rep(i,a,b) for(int i = a; i < b; i++)
+#define mod 1000000007
+#define inf (1LL<<60)
+//#define all(x) (x).begin(), (x).end()
+//#define prDouble(x) cout << fixed << setprecision(10) << x
+//#define triplet pair<ll,pair<ll,ll>>
+//#define goog(tno) cout << "Case #" << tno <<": "
+#define fast_io ios_base::sync_with_stdio(false);cin.tie(NULL)
+#define read(x) int x; cin >> x
+#define readstr(x) string x;cin>>x
+#define readll(x) long long x; cin>>x 
+#define vi(name,n,d) vector<int> name (n,d)
+#define vl(name,n,d) vector<long long> name (n,d)
+#define nl <<"\n";
+#define endl "\n"
+#define flush cout.flush();
+
+using namespace std;
+
+void init_code(){
+    fast_io;
+    #ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+    #endif 
+}
+ void read_arr(int arr[],int n){
+ fr(0,n){
+    cin>>arr[i];
+ };
+ };
+
+ void print_arr(int arr[],int n){
+ fr(0,n){
+    cout<<arr[i]<<" ";
+ };
+ cout<<"\n";
+ };
+
+//assuming empty array
+void read_vec(vector<int>& arr,int n){
+ fr(0,n){
+ int x;
+ cin>>x;
+ arr.push_back(x);
+ };
+ };
+
+ void print_arr(vector<int>& arr){
+ for(auto it:arr){
+    cout<<it<<" ";
+ };
+ cout<<"\n";
+ };
+
+int main() {
+   init_code();
+   int t = 1; cin >> t;
+   while(t--){
+        map<string,set<int>> fromto;
+        read(n);
+        read(q);
+        vector<string> city(n+1);
+
+        fr(1,n+1){
+         readstr(s);
+         // cout<<"s  is "<<s nl;
+         fromto[s].insert(i);
+         city[i] = s;
+        };
+        // cout<<"city array is " nl;
+        // for(auto it: city){
+        //  cout<<it<<" ";
+        // }; 
+        // cout nl;
+        fr(0,q){
+         read(from);
+         read(to);
+         // cout<<"\n----------------\n---------\nquery :"<<i nl
+         // cout<<"from  = "<<from nl;
+         // cout<<"to  = "<<to nl;
+         string colors_from = city[from];  
+         string colors_to = city[to];  
+         // cout<<"string from is "<<colors_from nl;
+         // cout<<"string to is "<<colors_to nl;
+
+
+         //condition for same color 
+         bool same = false;
+          for(int i = 0;i<2;i++){
+               for(int j = 0;j<2;j++){
+                  if(colors_from[i] == colors_to[j]){
+                     same = true;
+                  };
+               };
+            };
+          if(same){
+            // cout<<"both had one same color \n";
+            cout<<abs(from-to) nl;
+         }
+         else{
+            // cout<<"both had different color " nl;
+            int dist = 1e9;
+            for(int i = 0;i<2;i++){
+               for(int j = 0;j<2;j++){
+                  string code = string(1,colors_from[i])+string(1,colors_to[j]);
+                  // // left_closest
+                  // cout<<"\n@@@@@code is : "<<code nl;
+                  auto candidate1 = fromto[code].lower_bound(to);
+                  auto candidate2 = fromto[code].upper_bound(to);
+                  if(candidate1 != fromto[code].begin() ){
+                     candidate1--;
+                     // cout<<"candidate1 is "<<*(candidate1) nl; 
+                     int dist1 = abs(from - *candidate1)+ abs(*candidate1-to); 
+                     dist = min(dist,dist1);
+                  };
+                  if(candidate2 != fromto[code].end()){
+                     // cout<<"candidate2 is "<<*(candidate2) nl;
+                     int dist2 = abs(from - *candidate2)+ abs(*candidate2-to);
+                      dist = min(dist,dist2);
+                  };
+                  // cout<<"distance is "<<dist nl;
+               };
+            };
+            // cout<<"dist = ";
+            cout<<(dist == 1e9 ? -1 : dist)nl;
+         };
+        }
+        // cout<<"\n";
+   }
+   return 0;
+}
