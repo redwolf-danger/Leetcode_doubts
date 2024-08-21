@@ -1,0 +1,130 @@
+#include <iomanip>
+#include <ios>
+#include<bits/stdc++.h>
+#define ll long long
+#define pb push_back
+#define fr(a,b) for(int i = a; i < b; i++)
+#define rep(i,a,b) for(int i = a; i < b; i++)
+#define mod 1000000007
+#define inf (1LL<<60)
+//#define all(x) (x).begin(), (x).end()
+//#define prDouble(x) cout << fixed << setprecision(10) << x
+//#define triplet pair<ll,pair<ll,ll>>
+//#define goog(tno) cout << "Case #" << tno <<": "
+#define fast_io ios_base::sync_with_stdio(false);cin.tie(NULL)
+#define read(x) int x; cin >> x
+#define readstr(x) string x;cin>>x
+#define readll(x) long long x; cin>>x 
+#define vi(name,n,d) vector<int> name (n,d)
+#define vl(name,n,d) vector<long long> name (n,d)
+#define nl <<"\n";
+#define endl "\n"
+#define flush cout.flush();
+
+using namespace std;
+
+void init_code(){
+    fast_io;
+    #ifndef ONLINE_JUDGE
+    freopen("input.txt", "r", stdin);
+    freopen("output.txt", "w", stdout);
+    #endif 
+}
+ void read_arr(int arr[],int n){
+ fr(0,n){
+    cin>>arr[i];
+ };
+ };
+
+ void print_arr(int arr[],int n){
+ fr(0,n){
+    cout<<arr[i]<<" ";
+ };
+ cout<<"\n";
+ };
+
+//assuming empty array
+void read_vec(vector<int>& arr,int n){
+ fr(0,n){
+ int x;
+ cin>>x;
+ arr.push_back(x);
+ };
+ };
+
+ void print_arr(vector<int>& arr){
+ for(auto it:arr){
+    cout<<it<<" ";
+ };
+ cout<<"\n";
+ };
+
+int main() {
+   init_code();
+   readll(n);
+   readll(m);
+   readll(cs);
+   readll(cl);
+   readll(v);
+   vl(stairs,cs,0);
+   vl(lifts,cl,0);
+   fr(0,cs){
+   	cin>>stairs[i];
+   };
+   sort(stairs.begin(),stairs.end());
+   fr(0,cl){
+   	cin>>lifts[i];
+   };
+   sort(lifts.begin(),lifts.end());
+   readll(q);
+   fr(0,q){
+   	readll(x1);
+   	readll(y1);
+   	readll(x2);
+   	readll(y2);
+   	//for each x1 find the nearest stairs on the left and on the right
+   	ll mintime = inf;
+   	//stairs on left;
+   	int it;
+   	if(stairs.size()){
+   	it = lower_bound(stairs.begin(),stairs.end(),y1) - stairs.begin();
+   	if(it){
+   		ll forstairs = abs(stairs[it-1] - y1);
+   		ll forstairs2 = abs(y2 - stairs[it-1]);
+   		ll alonght = abs(x1-x2);
+   		ll time  = forstairs+ forstairs2+ alonght;
+   		mintime = min(mintime,time);
+   	}
+   	//stairs on right
+   	if(it!=cs){
+   		ll forstairs = abs(stairs[it] - y1);
+   		ll forstairs2 = abs(y2 - stairs[it]);
+   		ll alonght = abs(x1-x2);
+   		ll time  = forstairs + forstairs2 + alonght;
+   		mintime = min(mintime,time);
+   	}
+   };
+   if(lifts.size()){
+   	//for lift on left
+   	it = lower_bound(lifts.begin(),lifts.end(),y1) - lifts.begin();
+   	if(it){
+   		ll forstairs = abs(lifts[it-1] - y1);
+   		ll forstairs2 = abs(y2 - lifts[it-1]);
+   		ll alonght = (abs(x1-x2))/v + (abs(x1-x2)%v != 0);
+   		ll time  = forstairs+ forstairs2+ alonght;
+   		mintime = min(mintime,time);
+   	}
+   	//stairs on right
+   	if(it!=cl){
+   		ll forstairs = abs(lifts[it] - y1);
+   		ll forstairs2 = abs(y2 - lifts[it]);
+   		ll alonght = (abs(x1-x2))/v + (abs(x1-x2)%v != 0);
+   		ll time  = forstairs + forstairs2 + alonght;
+   		mintime = min(mintime,time);
+   	};
+   };
+   	cout<<mintime nl;
+
+   }
+   return 0;
+}
