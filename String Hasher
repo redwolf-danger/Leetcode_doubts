@@ -1,0 +1,28 @@
+class str_hash{
+public: 
+	const int base1 = 97;
+  const int base2 = 79;
+	const int mod1 = 1e9 + 7;
+	const int mod2 = 1e9 + 9;
+	int n;
+	vector<pair<ll,ll>> powers;
+	vector<pair<ll,ll>> prefixes; 
+	str_hash(string& s){
+		n = s.size();
+		powers.resize(n+1,{1,1});
+		prefixes.resize(n+1);	
+		for(int i = 1 ;i<=n;i++){
+			prefixes[i].first = ((prefixes[i-1].first)*base1 + (s[i-1]-'a') + mod1)%mod1;
+			prefixes[i].second = ((prefixes[i-1].second)*base2 + (s[i-1]-'a') + mod2)%mod2;
+			powers[i].first = ((powers[i-1].first)*(base1) + mod1)%mod1;
+			powers[i].second = ((powers[i-1].second)*(base2) + mod2)%mod2;
+		};
+	};
+ 
+	pair<ll,ll> value(int l, int r){
+		pair<ll,ll> ans = prefixes[r+1];
+		ans.first = (ans.first - ((prefixes[l].first)*powers[r-l+1].first + mod1 ) % mod1 + mod1)%mod1;
+		ans.second = (ans.second - ((prefixes[l].second)*powers[r-l+1].second + mod2 ) % mod2 + mod2)%mod2;
+		return ans;
+	};
+};
